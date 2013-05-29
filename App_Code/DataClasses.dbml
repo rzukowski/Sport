@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ASPNETDB" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(localdb)\v11.0;AttachDbFilename=|DataDirectory|\ASPNETDB.MDF;Integrated Security=True;User Instance=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="FriendsConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.friends" Member="friends">
+    <Type Name="friend">
+      <Column Name="userid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="friendid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="aspnet_User_friend" Member="aspnet_User" ThisKey="userid" OtherKey="UserId" Type="aspnet_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.aspnet_Users" Member="aspnet_Users">
+    <Type Name="aspnet_User">
+      <Column Name="ApplicationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="LoweredUserName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="MobileAlias" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="IsAnonymous" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastActivityDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="aspnet_User_friend" Member="friends" ThisKey="UserId" OtherKey="userid" Type="friend" />
+      <Association Name="aspnet_User_message" Member="messages" ThisKey="UserId" OtherKey="receivid" Type="message" />
+      <Association Name="aspnet_User_message1" Member="messages1" ThisKey="UserId" OtherKey="receivid" Type="message" />
+      <Association Name="aspnet_User_Wyglad" Member="Wyglad" ThisKey="UserId" OtherKey="userid" Type="Wyglad" Cardinality="One" />
+      <Association Name="aspnet_User_message_sent" Member="message_sents" ThisKey="UserId" OtherKey="receiver_id" Type="message_sent" />
+      <Association Name="aspnet_User_message_sent1" Member="message_sents1" ThisKey="UserId" OtherKey="receiver_id" Type="message_sent" />
+      <Association Name="aspnet_User_message11" Member="message1s" ThisKey="UserId" OtherKey="receivid" Type="message1" />
+      <Association Name="aspnet_User_message12" Member="message1s1" ThisKey="UserId" OtherKey="receivid" Type="message1" />
+      <Association Name="aspnet_User_user_profile" Member="user_profile" ThisKey="UserId" OtherKey="userid" Type="user_profile" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="dbo.message" Member="messages">
+    <Type Name="message">
+      <Column Name="msgid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sendid" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="receivid" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="mssg" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="sentdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="aspnet_User_message" Member="aspnet_User" ThisKey="receivid" OtherKey="UserId" Type="aspnet_User" IsForeignKey="true" />
+      <Association Name="aspnet_User_message1" Member="aspnet_User1" ThisKey="receivid" OtherKey="UserId" Type="aspnet_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Viewed" Member="Vieweds">
+    <Type Name="Viewed">
+      <Column Name="OdwiedzanyId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OdwiedzilId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Data" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="viewed" Member="viewed1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Wyglad" Member="Wyglads">
+    <Type Name="Wyglad">
+      <Column Name="userid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="wzrost" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="waga" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="budowa_ciala_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="aspnet_User_Wyglad" Member="aspnet_User" ThisKey="userid" OtherKey="UserId" Type="aspnet_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Sport" Member="Sports">
+    <Type Name="Sport">
+      <Column Name="sport_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="sport_opis" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.message_sent" Member="message_sents">
+    <Type Name="message_sent">
+      <Column Name="msgid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sender_id" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="receiver_id" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="mssg" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="sentdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="aspnet_User_message_sent" Member="aspnet_User" ThisKey="receiver_id" OtherKey="UserId" Type="aspnet_User" IsForeignKey="true" />
+      <Association Name="aspnet_User_message_sent1" Member="aspnet_User1" ThisKey="receiver_id" OtherKey="UserId" Type="aspnet_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.message" Member="message1s">
+    <Type Name="message1">
+      <Column Name="msgid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sendid" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="receivid" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="mssg" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="sentdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="aspnet_User_message11" Member="aspnet_User" ThisKey="receivid" OtherKey="UserId" Type="aspnet_User" IsForeignKey="true" />
+      <Association Name="aspnet_User_message12" Member="aspnet_User1" ThisKey="receivid" OtherKey="UserId" Type="aspnet_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.plec" Member="plecs">
+    <Type Name="plec">
+      <Column Name="plec_Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="plec" Member="plec1" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.user_profile" Member="user_profiles">
+    <Type Name="user_profile">
+      <Column Name="userid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="fullname" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="plec_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="birthdate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="opis" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="wojewodztwo_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="aspnet_User_user_profile" Member="aspnet_User" ThisKey="userid" OtherKey="UserId" Type="aspnet_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.user_sport" Member="user_sports">
+    <Type Name="user_sport">
+      <Column Name="userid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="sport_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Function Name="dbo.PokazOdwiedzone" Method="PokazOdwiedzone">
+    <Parameter Name="userid" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="PokazOdwiedzoneResult">
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Data" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="plec" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Wiek" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="wojewodztwo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.Szukaj" Method="Szukaj">
+    <Parameter Name="gender" Type="System.Int32" DbType="Int" />
+    <Parameter Name="dateUp" Type="System.Int32" DbType="Int" />
+    <Parameter Name="dateDown" Type="System.Int32" DbType="Int" />
+    <Parameter Name="userid" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="wojewodztwo_id" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="SzukajResult">
+      <Column Name="userid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="fullname" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="opis" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="plec" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="birthdate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="wojewodztwo_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CountWiek" Method="CountWiek" IsComposable="true">
+    <Parameter Name="dataurodzin" Type="System.String" DbType="Char(11)" />
+    <ElementType Name="CountWiekResult">
+      <Column Name="c1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

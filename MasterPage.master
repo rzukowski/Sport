@@ -1,0 +1,65 @@
+﻿<%@ Master Language="C#" CodeFile="MasterPage.master.cs" Inherits="MasterPage"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+
+    <title>Strona moja</title>
+    <style type="text/css">
+        
+    </style>
+    <script type="text/javascript" src="Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="Scripts/jquery-1.9.1.intellisense.js"></script>
+<script type="text/javascript" src="Scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.uploadify.js"></script>
+    <script type="text/javascript" src="highslide/highslide.min.js"></script>
+    
+<script type="text/javascript">
+    // override Highslide settings here
+    // instead of editing the highslide.js file
+    hs.graphicsDir = '/highslide/graphics/';
+</script>
+    <link href="StyleSheet.css" rel="stylesheet" type="text/css" />
+    <link href="highslide/highslide.css" rel="stylesheet" />
+</head>
+<body><div id="popup_box">	
+	
+	<a id="popupBoxClose">X</a>	
+</div><div id="MainContainer"><form id="form1" runat="server">
+    <div id="Logo"><span class="log">Ktoszuka-tenznajdzie.pl</span><br /><div id="menu"><asp:Menu ID="MenuGlowne" runat="server" DataSourceID="MapaSerwisu" Orientation="Horizontal" CssClass="men" EnableTheming="True" OnMenuItemClick="MenuGlowne_MenuItemClick">
+            <DynamicHoverStyle CssClass="ZaznaczonyElementMenu" />
+            <DynamicMenuItemStyle CssClass="ElementMenuRozwijanego" />
+            <StaticHoverStyle CssClass="ZaznaczonyElementMenu" />
+            <StaticMenuItemStyle CssClass="ElementMenuNadrzednego" />
+         
+        </asp:Menu><asp:Label ID="NowaWiadomosc" runat="server" CssClass="noweWiadomosci"></asp:Label></div>
+      
+        </div>
+
+        
+        
+  
+    <div id="Menu">
+    <div id="ObszarLogowania">
+       Witaj <asp:Label runat="server" Id="user"></asp:Label>
+        | <asp:LinkButton OnClick="LogOut" Text="Wyloguj" runat="server"></asp:LinkButton>
+    </div>
+        
+     <p id="photo">  <asp:Image ID="photo" runat="server"  Width="100px" Height="100px"/></p> 
+      
+            <asp:SiteMapDataSource ID="MapaSerwisu" runat="server" ShowStartingNode="False" />
+       
+        Odwiedzili:<a href="Odwiedzili.aspx"><asp:Label runat="server" ID="OdwiedziliNew"></asp:Label><asp:Label runat="server" ID="OdwiedziliTotal"></asp:Label></a>
+
+       </div>
+    <div id="Content">
+          <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+
+    </div>
+
+
+      </form>
+    </div>
+</body>
+</html>

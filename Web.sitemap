@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode>
+    <siteMapNode url="Default.aspx" title="Strona Główna"  description="Idź do strony głównej" />
+    <siteMapNode title="| Profil"  description="" >
+      <siteMapNode title="Edytuj profil" url="edytujprofil.aspx" description="Edytuj swój profil" />
+    </siteMapNode>
+    <siteMapNode title="| Hasło"  description="" >
+      <siteMapNode title="Zmiana hasła" url="zmienhaslo.aspx" description="Zmień swoje hasło" />
+    </siteMapNode>
+    <siteMapNode title="| Wyszukiwanie"  description="" >
+      <siteMapNode title="Wyszukiwanie profili" url="szukajprzyjaciol.aspx" description="Zmień swoje hasło" />
+      <siteMapNode title="Zarządzanie ulubionymi" url="managerprzyjaciol.aspx" description="Usuwanie z listy ulubionych" />
+    </siteMapNode>
+    <siteMapNode title="| Skrzynka pocztowa" description="Przeczytaj wiadomości od użytkowników" >
+      <siteMapNode title="Wiadomości odebrane" url="wiadomosci.aspx" description="Wiadomości odebrane" />
+      <siteMapNode title="Wiadomości wysłane" url="wiadomosciWyslane.aspx" description="Wiadomości wysłane" />
+  </siteMapNode>
+    </siteMapNode>
+</siteMap>
