@@ -16,10 +16,13 @@
        </div>
           
 <div id="ObszarLogowania">
- Login: <asp:TextBox ID="UserName" runat="server"></asp:TextBox><br />
-   Hasło: <asp:TextBox ID="UserPass" runat="server" TextMode="Password"></asp:TextBox><br />
-    Zapamiętaj <asp:CheckBox ID="RememberMe" runat="server" /><br />
-          <asp:Button ID="Loguj" runat="server" OnClick="TryToLog" Text="Zaloguj" />
+ Login:<p> <asp:TextBox ID="UserName" runat="server" ></asp:TextBox></p>
+   Hasło: <p><asp:TextBox ID="UserPass" runat="server" TextMode="Password"></asp:TextBox></p>
+    Zapamiętaj <asp:CheckBox ID="RememberMe" runat="server" />
+
+  
+
+            <asp:LinkButton ID="LinkButton1" runat="server" class="buttonclass" onclick="TryToLog" >Zaloguj</asp:LinkButton>
           </div>
           <div id="Center">
    <p><a href="odzyskajhaslo.aspx">Zapomniałem hasła</a></p>

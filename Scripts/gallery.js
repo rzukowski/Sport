@@ -1,85 +1,187 @@
-﻿function getElementLeft(elm) {
-    var x = 0;
+﻿
+//to manage profile picture
+function BindEventsGallery() {
+    $(document).ready(function () {
 
-    //set x to elm’s offsetLeft
-    x = elm.offsetLeft;
+        $('html').click(function () {
 
-    //set elm to its offsetParent
-    elm = elm.offsetParent;
+            HideProfilePictureMenu();
+        });
+        
+        $("#photoDiv").mouseover(function () {
+          
 
-    //use while loop to check if elm is null
-    // if not then add current elm’s offsetLeft to x
-    //offsetTop to y and set elm to its offsetParent
+            $("#showProfilePictureMenu").show();
 
-    while (elm != null) {
-        x = parseInt(x) + parseInt(elm.offsetLeft);
-        elm = elm.offsetParent;
-    }
-    return x;
+
+        }).mouseout(function () {
+
+            if(!($("#showProfilePictureMenu").hasClass("active"))){
+                $("#showProfilePictureMenu").hide();
+                }
+
+        });
+
+        $('.popupBoxClose').click(function () {
+            unloadPopupBox($(this).closest('div'));
+        });
+
+       
+        $("#profilPictureClickMenu").click(function () {
+            $("#showProfilePictureMenu").addClass("active");
+            $("#profilePictureMenu").fadeIn("slow");
+
+        });
+
+    
+
+
+
+
+    });
 }
 
-function getElementTop(elm) {
-    var y = 0;
+/// invoke scriptservice.asmx
+function getData(serviceURL, controlLocation, divId, username,userid) {
 
-    //set x to elm’s offsetLeft
-    y = elm.offsetTop;
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: serviceURL,
+        data: "{'controlLocation':'" + controlLocation + "', 'username':'"+username+"','userid':'"+userid+"'}",
+        beforeSend:
+            function(){
 
-    //set elm to its offsetParent
-    elm = elm.offsetParent;
+                ShowLoadingDiv();
 
-    //use while loop to check if elm is null
-    // if not then add current elm’s offsetLeft to x
-    //offsetTop to y and set elm to its offsetParent
+            },
+        success:
+         function (msg) {
+     
+             HideLoadingDiv()
+             $(divId).empty();
+             $(divId).append(msg.d);
 
-    while (elm != null) {
-        y = parseInt(y) + parseInt(elm.offsetTop);
-        elm = elm.offsetParent;
-    }
 
-    return y;
+         },
+          complete:
+             function () {
+                
+                 loadPopupBox2(divId);
+             },
+        error:
+         function (XMLHttpRequest, textStatus, errorThrown) {
+             alert('error');
+             HideLoadingDiv()
+            
+         }
+    });
 }
 
-function Large(obj) {
-    var imgbox = document.getElementById("imgbox");
-    imgbox.style.visibility = 'visible';
-    var img = document.createElement("img");
-    img.src = obj.src;
-    var height = obj.height;
-    var width = obj.width;
-    img.style.width = width * 2;
-    img.style.height = height * 2;
+function getData2(serviceURL,divId,paginatedPage,userid) {
 
-    if (img.addEventListener) {
-        img.addEventListener('mouseout', Out, false);
-    } else {
-        img.attachEvent('onmouseout', Out);
-    }
-    imgbox.innerHTML = '';
-    imgbox.appendChild(img);
-    imgbox.style.left = (getElementLeft(obj) - 50) + 'px';
-    imgbox.style.top = (getElementTop(obj) - 50) + 'px';
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: serviceURL,
+        data: "{'userid':'" + userid + "','paginatedPageNumbers':'" + paginatedPage + "'}",
+        beforeSend:
+            function () {
+
+                ShowLoadingDiv();
+
+            },
+        success:
+         function (msg) {
+
+             HideLoadingDiv()
+             $(divId).empty();
+
+             $(divId).append(msg.d);
+             alert(msg.d);
+
+         },
+        complete:
+           function () {
+
+               loadPopupBox2(divId);
+           },
+        error:
+         function (XMLHttpRequest, textStatus, errorThrown) {
+             alert('error');
+             HideLoadingDiv()
+
+         }
+    });
+}
+
+function ShowMenu(object) {
+
+    object.append("#vertmenu");
+    $("#vertmenu").show();
+
+
+}
+
+function HideDiv(divId) {
+
+    $(divId).fadeOut("fast");
+
 }
 
 
-function Out() {
-    document.getElementById("imgbox").style.visibility = 'hidden';
-}
-
-
-function unloadPopupBox() {	// TO Unload the Popupbox
-    $('#popup_box').fadeOut("fast");
-    $('#popup_box').find('img').remove();
+function unloadPopupBox(divId) {	// TO Unload the Popupbox
+    $(divId).fadeOut("fast");
+    $(divId).find('img').remove();
     $("#MainContainer").css({ // this is just for style		
         "opacity": "1"
     });
 }
 
-function loadPopupBox(img) {// To Load the Popupbox
-   
-    $('#popup_box').append("<img src='"+img+"'/>");
-    $('#popup_box').fadeIn("slow");
-    
+function loadPopupBox(img,divId) {// To Load the Popupbox
+
+    $(divId).append("<img src='" + img + "'/>");
+
+    $(divId).fadeIn("slow");
+
     $("#MainContainer").css({ // this is just for style
         "opacity": "0.3"
     });
+}
+
+
+function loadPopupBox2(divId) {// To Load the Popupbox
+
+    $(divId).fadeIn("slow");
+
+    $("#MainContainer").css({ // this is just for style
+        "opacity": "0.3"
+    });
+}
+
+
+function ShowLoadingDiv() {
+
+    $('body').append('<div id="Downloading"><br /><img alt="" src="images/ajax-loader.gif" /></div>');
+    $("#MainContainer").css({ // this is just for style
+        "opacity": "0.3"
+    });
+
+
+}
+
+function HideLoadingDiv() {
+    
+    $('#Downloading').remove();
+
+}
+
+
+function BindChangeProfilePictureFromGallery() {
+
+
+
+
+
+
 }

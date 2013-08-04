@@ -8,6 +8,8 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Data.SqlClient;
 using Base;
+using UsrCode;
+
 public partial class showprofile : BaseClass
 {
 

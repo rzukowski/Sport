@@ -7,7 +7,8 @@
 
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <script type="text/javascript" src="Scripts/gallery.js"></script>    <script type="text/javascript" src="Scripts/validation_dane.js"></script>
+    <script type="text/javascript" src="Scripts/gallery.js"></script>
+    <script type="text/javascript" src="Scripts/validation_dane.js"></script>
     <script type="text/javascript" src="Scripts/ValidateUpload.js"></script>
     <script type="text/javascript">
 
@@ -15,15 +16,13 @@
         //funkcja do zakładek
         $(document).ready(function () {
 
-            $('#popupBoxClose').click(function () {
-                unloadPopupBox();
-            });
+
 
             $('.thumb').each(function () {
 
                 $(this).click(function () {
                     
-                    loadPopupBox($(this).attr('src'));
+                    loadPopupBox($(this).attr('src'),"#popup_box");
 
                 });
 

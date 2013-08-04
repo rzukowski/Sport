@@ -9,6 +9,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Data.SqlClient;
 using Base;
 using System.IO;
+using UsrCode;
 
 
 public partial class edytujprofil : BaseClass
@@ -182,14 +183,14 @@ public partial class edytujprofil : BaseClass
     {
         string username = Session["username"].ToString();
         string userid = Session["userid"].ToString();
-        string[] extensions = { ".gif", ".jpg", ".png" };
+        
         try
         {
             if (FileUploadControl.HasFile)
             {
                 string filename = Path.GetFileName(FileUploadControl.FileName);
                 
-                if(extensions.Any(filename.Contains)){
+                if(Usr.extensions.Any(filename.Contains)){
 
                     System.Drawing.Image img = System.Drawing.Image.FromStream(FileUploadControl.PostedFile.InputStream);
                 int fileHeight = img.Height;
@@ -211,7 +212,7 @@ public partial class edytujprofil : BaseClass
 
                 string savePath = Server.MapPath("./") + strPath + "\\" + filename;
 
-                bool updated = Usr.SaveFileToDatabase(userid, strPath + "\\" + filename);
+                bool updated = Usr.SaveFileToDatabase(userid, strPath + "\\" + filename,false);
 
                 if (updated)
                     FileUploadControl.SaveAs(Server.MapPath("./") + strPath + "\\" + filename);

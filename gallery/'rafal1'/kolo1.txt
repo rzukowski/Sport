@@ -1,0 +1,231 @@
+1. Odziedzyczyłeś bazę po poprzednim administratorze. Dlaczego baza nie daje się uruchomić? Co jest nie tak? Wypisz błędy.
+
+Wygląda na to, że na kolokwium była dana studentom maszyna z błędami.
+Poniżej odpowiedź za która ktoś dostał max punktów:
+"Nie jest ustawiona zmienna środowiskowa PGDATA (powinna mieć wartość /usr/local/pgsql/klaster)
+W pliku /usr/local/pgsql/klaster/postgresql.conf max_connection ma ustawioną wartość "0" zamiast... (<nie mogę odczytać - niemniej aby się połączyć do bazy zmienna ta musi mieć wartość większą niż '0'> - edit. Rafał) "
+
+
+2. Jakie zapytanie należy wpisać aby sprawdzić czy w bazie istnieje jakikolwiek użytkownik, który może stworzyć bazę danych?
+
+Należy zwrocić się do 'System Catalog', tabeli pg_user (z manuala: "The system catalogs are the place where a relational database management system stores schema
+metadata, such as information about tables and columns, and internal bookkeeping information")
+
+SELECT * FROM pg_user where usecreatedb = true;
+
+3. Zwolniony administrator trochę namieszał i teraz baza wyrzuca stanowczo za dokładne komunikaty o błędach. Jaką opcję i w jakim pliku należy zmienić.
+
+W postgresql.conf znajdź podsekcję When To Log (tu konfigurujesz poziom logowania, poziomy są
+wymieniane od najbardziej szczegółowego)
+a.client_min_messages– poziom logowania po stronie klienta (dostępne są też
+‘niewylistowane’ w pliku poziomy panici fatal. Jeśli jeden z nich ustawisz wtedy
+klient będzie musiał się bardzo postarać aby zobaczyć jakiś komunikat błędu.
+Błedy SQL nie będą zgłaszane)
+
+b.log_min_messages – poziom logowania po stronie serwera
+c.log_error_verbosity – dokładność logowanego wpisu
+d.log_min_error_statement – logowanie np. błędów poleceń SQL
+
+Spośród dostępnych poziomów można wymienić
+a.DEBUG5: najbardziej szczegółowy
+b.NOTICE: wyświetla informacje, np. o tworzeniu indexów (informacje przydatne
+dla użytkownika).
+c.WARNING: ostrzeżenia nie powodujące przerwania wykonania komendy
+d.ERROR: błędy powodujące przerwanie wykonania działania jakiejś komendy
+e.LOG: informacje przydatne administratorowi np: ustawianie checkpoint’ów
+f.FATAL: błędy powodujące przerwanie aktualnej sesji
+g.PANIC: błędy powodujące przerwanie wszystkich sesji
+
+
+4. W bazie postgres stwórz jako użytkownik postgres 2 schematy o nazwie sch1 i sch2. W każdym ze schematów public, sch1, sch2 stwórz tabelę tab1(a int), wstaw po kilka danych do każdej z nich. Zaczaruj postgresa tak, by po wykonaniu zapytania Select * from tab1; pojawiła się zawartość tabeli ze schematu sch2. Napisz polecenia tworzące tabele, schematy i rozwiązanie czarów.
+
+CREATE SCHEMA sch1; CREATE SCHEMA sch2; CREATE TABLE tab1(a int); CREATE TABLE sch1.tab1(a int); CREATE TABLE sch2.tab2(a int);
+
+SET search_path to sch2;
+
+5. Co należy zrobić aby uzyskać brudny odczyt?
+Brudny odczyt ma miejsce wtedy, gdy pewne instrukcje SQL
+wewnątrz transakcji odczytują dane, które zostały zmienione
+przez inną transakcję, zaś transakcja, która zmieniła dane, nie
+zatwierdziła jeszcze swoich działań.
+z wykładu: PostgreSQL nigdy nie umożliwia operacji brudnego odczytu
+
+6. Co może być przyczyną następującego błędu? Jakie polecenie może go naprawić?
+"
+postgres@sbd :~$ psql -U dbuser postgres
+FATAL: permission denied for database "postgres"
+DETAIL: User do not have CONNECT privilege.
+psql: FATAL: permission denied for database "postgres"
+
+Przyczyna: dbuser nie ma prawa dostępu do bazy postgres
+Napraw: => GRANT CONNECT ON DATABASE postgres TO dbuser;
+
+DRUGIE kolokwium
+
+1. Jak zabrać user3 prawo do tworzenia nowych baz?
+
+ALTER USER user3 WITH NOCREATEDB;
+
+2. Czym się różni template0 od template1? Co to za obiekty? Czemu są takie dwa?
+
+Polecenie CREATE DATABASE tak na prawdę kopiuje zawartość template1 czyli systemowej bazy postgresa. Jeśli user doda nowy obiekt do template1, to nowo stworzona baza będzie miała zawartość template1. 
+template1 jest kopią template0, przy czym nie można zmienić template0. template1 jest defaultowo używany do tworzenia nowych baz
+
+Podczas wymuszonego kopiowiania z template0 mozna ustawić kodowanie znaków.
+template0 jest także używane podczas pg_dumpall
+
+6. Chcielibyśmy spowodować aby odczyt z transakcji mógł nie być powtarzalny. Czy jeśli mamy świeżo zainstalowany postgres to czy musimy coś zrobić? Napisz polecenie. 
+
+Postgres świeżo po instalacji ma ustawiony poziom izolacji na READ_COMMITTED który to umożliwia niepowtarzalny odczyt. Nie musimy wydawać żadnego polecenia.
+
+
+KOLO 3
+
+2. 
+a)Z poziomu powłoki utworzyć usera 'admin' (nie jest superuzytkownikiem, moze tworzyc bazy, moze tworzyc role, mozle sie logowac, haslo = 'admin').
+
+createuser -S -r -d -l -P admin
+Enter password for new role: admin
+Enter it again: admin
+b) połączyć się z bazą jako użytkownik 'admin' i utworzyć użytkowników 'grant' i user1 (nie są superużytkownikami, nie mogą tworzyć baz oraz ról, mogą się logować bez haseł) oraz wypisać to polecenie
+
+psql -U admin
+=> CREATE USER "grant" NOSUPERUSER NOCREATEDB NOCREATEROLE LOGIN;
+=> CREATE USER user1 ..(dalej tak samo)
+
+c) utworzyć jako admin bazę o nazwie db1 i wypisz to polecenie
+
+createdb db1 -U admin
+
+3. Skonfigurować dostęp do serwera (w pliku pga_hba.conf):
+
+a) użytkownik admin mógł się łączyć ze wszystkimi bazami tylko lokalnie po podaniu hasła
+
+locall all admin password
+
+b) użytkownicy grant i user1 nie mogli się łączyć lokalnie z bazą postgres a zdalnie mogli się łączyć z bazą db1 i >>tylko<< z podsieci 192.168.0.0 (bez hasła)
+
+local postgres admin,user1  reject
+
+host	db1 admin,user1 192.168.0.0/16 trust
+host	all	admin,user2 0.0.0.0/0	reject
+
+Zadanie 4.
+a) Utworzyć jako admin schemat schemat1 w bazie db1 i wpisać poniżej realizujące to zadanie:
+=> \c db1 (czyli łączymy się do bazy db1)
+=> CREATE SCHEMA schemat1;
+
+b)nadać wszystkie prawwa do tego schematu użytkownikowi grant
+
+GRANT ALL ON SCHEMA schemat1 TO "grant";
+
+c) nadać prawo do używania (ale nie tworzenia obiektów) w tym schemacie
+
+GRANT USAGE ON SCHEMA schemat1 to "grant";
+
+Zadanie 5.
+Korzystając z information_schema naisać zapytanie (i wynik tego zapytania), które policzy wszystkie schematy w bazie postgres, których właścicielem jest użytkownik postgres:
+
+SELECT COUNT(schema_name) FROM information_schema.schemata WHERE catalog_name = 'postgres' AND schema_owner ='postgres';
+
+
+
+KOŁO HARDKOR
+
+1. Co może być przyczyną poniższego błędu?
+"psql: could not connect to server: No such file or directory
+Is the server running locally and accepting connections on UNIX domain?"
+
+a)próba logowania do nieistniejącej bazy - NIE
+b)próba zdalnego logowania do bazy na komputerze, na którym nie jest uruchomiony serwer postgresa - NIE (byłby inny komunikat)?
+c)próba lokalnego logowania do bazy na kompie, na którym nie jest uruchomiony serwer postgresa - TAK
+
+2. Co przechowuje zmienna PGDATA?
+
+a) ścieżkę do katalogu, w którym znajdują się wszystkie pliki konfiguracyjne postgresa; TAK
+b) ścieżkę do katalogu, w którym znajdują się pliki wykonywalne postgresa (takie jak na przykład psql, createdb, createuser) NIE (ścieżke tą przechowują $PATH)
+c) nic szczególnego, gdyż od wersji 8.1 nie jest już ona wykorzystywana (pozostowiona ją wyłącznie dla zachowania kompatybilności z poprzednimi wersjami postgresa) z tego co wiem NIE
+
+3. Co może być powodem wystąpienia poniższego błedu?
+"
+postgres@sbd:/usr/local/pgsql/klaster$ psql
+FATAL: Ident authentication failed for user "postgres"
+psql: FATAL: Ident authentication failed for user "postgres"
+
+a) nie ma użytkownika bazy o nazwie postgres
+b) w systemie operacyjny nie istnieje użytkownik o nazwie postgres
+c) użytkownik o nazwie postgres nie ma prawa logowania do żadnej z bad danych
+
+4. Aby naprawić ten błąd należy:
+zmienić wpis w pg_hba.conf?
+$ sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+
+5. Napisz zapytanie, które zwróci nazwę obiektu, którego oid jest równe 24576 (dla ułatwienia zrzut);
+
+SELECT relname FROM pg_class where oid=24576;
+
+6. Poniższy komunikat:
+postgres@sbd:~$ Fatal: could not load server cerificate file "server.ct": No such file or directory
+
+a) może wystąpić zarówno przy starcie jak i przy restarcie serwera
+b) jest wynikiem braku certyfikatu u zdalnego klienta łączącego się z serwerem - chyba TAK?
+c) nigdy nie wystąpi w sytuacji gdy serwer nie nasłuchuje sieciowo
+
+7. Można to rozwiązać:
+stworzenie pliku z kluczem?
+
+8. Nie mieliśmy teog na zajęciach
+
+9. Co może być powodem wystąpienia poniższego błędu?
+
+"
+postgres@sdb:~$ psql
+FATAL: no pg_hba.conf entry for host "[localhost]", user "postgres"...
+"
+a) serwer postgresa nie jest uruchomiony - NIE, wystąpiłby inny błąd
+b) serwer postgresa nie nasłuchuje sieciowo - NIE, wyraźnie jest napisane że nie ma wpisu dla hosta "[local]"
+c) conajmniej jedna reguła w pg_hba.conf zawiera błąd syntaktyczny. - NIE, przy literówce w pg_hba.conf nie uruchomiłby się serwer
+
+10. Aby powyżsy błąd naprawić należy:
+a) wyłączyć opcję ssl i zrestartować serwer postgresa - NIE, logujemy sięprzecież lokalnie
+b) dodać do pg_hba wpis zezwalający na lokalne lokowanie - TAK
+c)włączyć nasłuchiwanie lokalne i zrestartować serwer - NIE to było przyczyną
+
+11. Przyczyną poniższego błędu możę być:
+"postgres@sdb:~$psql -U user1 postgres
+FATAL: permission denied for database "postgres"
+DETAIL: user does not have connect privilege"
+
+a) brak odpowiedniego wpisu w pg_hba.conf -nie, dostalibyśmy inny rodzaj błędu
+b) brak uprawnień użytkownika user1 do schematu public w bazie postgres - TAK
+c) brak uprawnień użytkownikowi user1 do łączenia z bazą template1 - NIE, template1 jest używane wyłącznie przy tworzeniu bazy
+
+
+12. Dlaczego drugie z poniższych zapytań nie znajduje żadnego wiersza w tabeli test?
+"postgres=# create table test as select generate_series(10,20) as i;
+SELECT
+postgres=# select reltuples from pg_class where relname='test';
+"
+
+a) pierwsze polecenie nie wstawia żadnych wierszy do tabeli test  - NIE
+b) kolumna reltuples nie jest automatycznie akutalizowana - raczej TAK: z manuala: "reltuples: Number of rows in the
+table. This is only an
+estimate used by the
+planner. It is updated
+by VACUUM, ANALYZE,
+and a few DDL
+commands such as
+CREATE INDEX."
+
+c)kolumna relname występująca w warunku WHERE nie przechowuje nazwy tabeli tylko nazwę relacji pomiędzy tabelami - NIE
+
+13. W bazie postgres został utworzony schemat replikacji. Dlaczego drugie z poniższych poleceń zwraca błąd?
+
+"postgres=# set search_path to _bazaVideo;
+ERROR: schema "_bazavideo" does not exists;"
+
+a) nie można się przełączyć do schematu replikacji
+b) zmienna search_path nie może wskazywać na schemat replikacji
+c) schemat replikacji ma inną nazwę od tej użytej w poleceniu set
+???nie wiem
+

@@ -8,6 +8,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Data.SqlClient;
 using Base;
+using UsrCode;
 public partial class szukajprzyjaciol : BaseClass
 {
     public static int mssgPerPage = 10;
@@ -104,7 +105,11 @@ public partial class szukajprzyjaciol : BaseClass
 
     }
 
-
+    /// <summary>
+    /// basing on clicked pagination links, run stored procedure and returns profiles which met conditions
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void FillSzukane(object sender, CommandEventArgs e)
     {
 
@@ -153,7 +158,11 @@ public partial class szukajprzyjaciol : BaseClass
 
     
 
-
+    /// <summary>
+    /// gets selected values (age,gender etc.) send it to stored procedure
+    /// gets result of SP (how many profiles met selected conditions) which is used to build pagination links
+    /// </summary>
+    /// <param name="PageNumber"></param>
     protected void BuildPaginationLinks(string PageNumber)
     {
 

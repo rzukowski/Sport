@@ -59,6 +59,9 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
   partial void Insertuser_sport(user_sport instance);
   partial void Updateuser_sport(user_sport instance);
   partial void Deleteuser_sport(user_sport instance);
+  partial void InsertGaleria(Galeria instance);
+  partial void UpdateGaleria(Galeria instance);
+  partial void DeleteGaleria(Galeria instance);
   #endregion
 	
 	public DataClassesDataContext() : 
@@ -176,6 +179,14 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 		get
 		{
 			return this.GetTable<user_sport>();
+		}
+	}
+	
+	public System.Data.Linq.Table<Galeria> Galerias
+	{
+		get
+		{
+			return this.GetTable<Galeria>();
 		}
 	}
 	
@@ -2156,6 +2167,116 @@ public partial class user_sport : INotifyPropertyChanging, INotifyPropertyChange
 				this._sport_id = value;
 				this.SendPropertyChanged("sport_id");
 				this.Onsport_idChanged();
+			}
+		}
+	}
+	
+	public event PropertyChangingEventHandler PropertyChanging;
+	
+	public event PropertyChangedEventHandler PropertyChanged;
+	
+	protected virtual void SendPropertyChanging()
+	{
+		if ((this.PropertyChanging != null))
+		{
+			this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+	}
+	
+	protected virtual void SendPropertyChanged(String propertyName)
+	{
+		if ((this.PropertyChanged != null))
+		{
+			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Galeria")]
+public partial class Galeria : INotifyPropertyChanging, INotifyPropertyChanged
+{
+	
+	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+	
+	private System.Guid _userid;
+	
+	private string _path;
+	
+	private System.Nullable<int> _profilowe;
+	
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnuseridChanging(System.Guid value);
+    partial void OnuseridChanged();
+    partial void OnpathChanging(string value);
+    partial void OnpathChanged();
+    partial void OnprofiloweChanging(System.Nullable<int> value);
+    partial void OnprofiloweChanged();
+    #endregion
+	
+	public Galeria()
+	{
+		OnCreated();
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userid", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+	public System.Guid userid
+	{
+		get
+		{
+			return this._userid;
+		}
+		set
+		{
+			if ((this._userid != value))
+			{
+				this.OnuseridChanging(value);
+				this.SendPropertyChanging();
+				this._userid = value;
+				this.SendPropertyChanged("userid");
+				this.OnuseridChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_path", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+	public string path
+	{
+		get
+		{
+			return this._path;
+		}
+		set
+		{
+			if ((this._path != value))
+			{
+				this.OnpathChanging(value);
+				this.SendPropertyChanging();
+				this._path = value;
+				this.SendPropertyChanged("path");
+				this.OnpathChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_profilowe", DbType="Int")]
+	public System.Nullable<int> profilowe
+	{
+		get
+		{
+			return this._profilowe;
+		}
+		set
+		{
+			if ((this._profilowe != value))
+			{
+				this.OnprofiloweChanging(value);
+				this.SendPropertyChanging();
+				this._profilowe = value;
+				this.SendPropertyChanged("profilowe");
+				this.OnprofiloweChanged();
 			}
 		}
 	}

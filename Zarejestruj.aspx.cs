@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using UsrCode;
 
 public partial class Zarejestruj : System.Web.UI.Page
 {

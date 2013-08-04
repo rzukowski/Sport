@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Data.SqlClient;
 using System.Web.Security;
-
+using UsrCode;
 
 
 public partial class MasterPage : System.Web.UI.MasterPage
@@ -20,48 +20,72 @@ public partial class MasterPage : System.Web.UI.MasterPage
 
     protected string UploadFolderPath = "~/photos/";
     public static string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["FriendsConnectionString"].ConnectionString;
+
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        GetUserName();
         if (!IsPostBack)
+        {
             user.Text = Session["username"].ToString();
 
-        string pht = "photos/" + Session["username"] + "image.jpg";
-        string def = Server.MapPath("./") + "photos\\default.jpg";
-        string usrPhoto = Server.MapPath("./") + "photos\\" + Session["username"] + "image.jpg";
-        if (System.IO.File.Exists(usrPhoto))
-        {
-            photo.ImageUrl = pht;
+            string username=user.Text;
+
+            string pathFromDB = Usr.GetProfilePicture(Session["userid"].ToString());
+
+
+            string usrphoto = Server.MapPath("./") + pathFromDB;
+
+
+            if (pathFromDB != null && System.IO.File.Exists(usrphoto))
+            {
+                photo.ImageUrl = pathFromDB;
+            }
+            else
+            {
+                photo.ImageUrl = Usr.defaultUserPhoto;
+
+            }
+
+
+            string userid = Session["userid"].ToString();
+            int numberOfMssg = Usr.NumberOfNotifications(userid);
+            if (numberOfMssg > 0)
+            {
+                Label myLabel = this.FindControl("NowaWiadomosc") as Label;
+                myLabel.Text = numberOfMssg.ToString();
+
+
+            }
+
+            Label OdwiedziliTotal = this.FindControl("OdwiedziliTotal") as Label;
+            Label OdwiedziliNew = this.FindControl("OdwiedziliNew") as Label;
+            if (GetNumberOfNewVisits() == 0)
+            {
+                OdwiedziliNew.Visible = false;
+            }
+            else
+            {
+                OdwiedziliNew.Text = GetNumberOfNewVisits().ToString() + "/";
+            }
+            OdwiedziliTotal.Text = Usr.GetNumberOfAllVisits(userid).ToString();
+
         }
-        else
-        {
-            photo.ImageUrl = "photos/default.jpg";
-            System.IO.File.Copy(def, usrPhoto);
-        }
+     
         
 
-        string userid = Session["userid"].ToString();
-        int numberOfMssg=Usr.NumberOfNotifications(userid);
-        if (numberOfMssg > 0)
-        {
-            Label myLabel = this.FindControl("NowaWiadomosc") as Label;
-            myLabel.Text = numberOfMssg.ToString(); 
+
+    }
+
+    protected string GetUserName()
+    {
+        return Session["username"].ToString();
+    }
 
 
-        }
-
-        Label OdwiedziliTotal = this.FindControl("OdwiedziliTotal") as Label;
-        Label OdwiedziliNew = this.FindControl("OdwiedziliNew") as Label;
-        if (GetNumberOfNewVisits() == 0)
-        {
-            OdwiedziliNew.Visible = false;
-        }
-        else
-        {
-            OdwiedziliNew.Text = GetNumberOfNewVisits().ToString()+"/";
-        }
-        OdwiedziliTotal.Text = Usr.GetNumberOfAllVisits(userid).ToString();
-
-
+    protected string GetUserId()
+    {
+        return Session["userid"].ToString();
     }
 
     protected void MenuGlowne_MenuItemClick(object sender, MenuEventArgs e)
@@ -117,5 +141,9 @@ public partial class MasterPage : System.Web.UI.MasterPage
         Session.Abandon();
         Response.Redirect("~/Zaloguj.aspx");
     }
+
+
+
+
 
 }

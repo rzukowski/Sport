@@ -324,7 +324,7 @@
              <table>
                 <tr><h3> <%# Eval("username") %></h3></tr>
                  <tr>
-                  <td> <img src='photos/<%# Eval("username") %>image.jpg' id='<%# Eval("username") %>p' alt="No Photo"  width="100px" height="100px" /></td>
+                  <td> <img src='photos/<%# Eval("username") %>image.jpg' id='<%# Eval("username") %>p' alt="No Photo" class="profilePhoto" width="100px" height="100px" /></td>
                   <td> 
                      <p class="opis" id='<%# Eval("username") %>'><%# Eval("opis") %></p>
                      <a href='showprofile.aspx?userid=<%# Eval("userid") %>&username=<%# Eval("username") %>'>Pokaż profil</a> <br />

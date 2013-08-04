@@ -106,6 +106,13 @@
       <Column Name="sport_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
     </Type>
   </Table>
+  <Table Name="dbo.Galeria" Member="Galerias">
+    <Type Name="Galeria">
+      <Column Name="userid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="path" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="profilowe" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
   <Function Name="dbo.PokazOdwiedzone" Method="PokazOdwiedzone">
     <Parameter Name="userid" Type="System.String" DbType="VarChar(50)" />
     <ElementType Name="PokazOdwiedzoneResult">

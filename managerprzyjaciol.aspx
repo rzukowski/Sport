@@ -1,16 +1,8 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPage.master" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPage.master" Title="Untitled Page" Inherits="managerprzyjaciol" CodeFile="managerprzyjaciol.aspx.cs"%>
 
 <script runat="server">
 
-    protected void btnDelete_Click(object sender, EventArgs e)
-    {
-        String userid = Session["userid"].ToString();
-        String friendid = ddlFriends.SelectedItem.Value;
-        if (Usr.DeleteFriend(userid, friendid))
-            Response.Redirect("default.aspx");
-        else
-            lbl.Text = "Błąd usuwania!";
-    }
+   
 </script>
 
 

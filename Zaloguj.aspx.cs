@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Web.Security;
 using System.Security.Cryptography;
 using System.Text;
+using UsrCode;
 public partial class Zaloguj : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
