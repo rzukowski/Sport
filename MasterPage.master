@@ -15,6 +15,14 @@
     <script type="text/javascript" src="Scripts/ajaxfileupload.js"></script>
     <script type="text/javascript" src="Scripts/FileUpload.js"></script>
      <script type="text/javascript" src="Scripts/ChangeProfilePic.js"></script>
+    <script type="text/javascript" src="Scripts/eventsajax.js"></script>
+    <script type="text/javascript" src="Scripts/json2.js"></script>
+      <link rel="stylesheet" type="text/css" media="all" href="Styles/jsDatePick_ltr.min.css" />
+    <script type="text/javascript" src="Scripts/jsDatePick.min.1.3.js"></script>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATSg64wvyGatvS-kqI-1ClpRxVh23ZyQI&sensor=true">
+    </script>
+      <script type="text/javascript" src="Scripts/calendarDateInput.js"></script>
     <link href="StyleSheet.css" rel="stylesheet" type="text/css" />
 
 </head>
@@ -40,10 +48,7 @@
 
             });
 
-            $("img").click(function () {
-
-                alert('img');
-            });
+          
 
         });
 
@@ -90,14 +95,14 @@
         
   
     <div id="Menu">
-        <div id="testDiv">dupa</div>
+
     <div id="ObszarLogowaniaMain">
        Witaj <asp:Label runat="server" Id="user"></asp:Label>
         | <asp:LinkButton OnClick="LogOut" Text="Wyloguj" runat="server"></asp:LinkButton>
     </div>
         
 
-
+<div id="photoWrapper">
      <div id="photoDiv"> <asp:Image ID="photo" runat="server"  Width="100px" Height="100px"/>
          <div id="showProfilePictureMenu">
          <ul class="profilePictureMenu">
@@ -116,6 +121,7 @@
 
          </div>
                       </div> 
+    </div>
        
  
         

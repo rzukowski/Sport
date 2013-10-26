@@ -39,13 +39,13 @@ public class DownloadUserPictures : System.Web.Services.WebService {
             string imgsrc = "<a class=\"popupBoxClose\" onclick=\"unloadPopupBox(changePhototFromGallery)\" >X</a>";
             
             foreach (string photo in photos)
-                imgsrc += "<img class=\'photoInPopup\' src=\'" + photo + "\' onclick = \"SelectPicture(this)\" />";
+                imgsrc += "<img class='notSelected' src=\'" + photo + "\' onclick = \"SelectPicture(this)\" />";
             imgsrc += "<br /><a onclick=\"ajaxChangeProfilePic('"+userid+"')\" class='buttonclass'>Zmień zdjęcie</a>";
             string paginatedLinks = "";
 
             if(numberOfPictures>Usr.maxPhotosPerUploadNewProfilePicture)
             {
-                paginatedLinks = CreatePaginatedLinks(paginatedPageNumber);
+                paginatedLinks = CreatePaginatedLinks(paginatedPageNumber,userid);
 
                 
             }
@@ -59,10 +59,9 @@ public class DownloadUserPictures : System.Web.Services.WebService {
     }
 
     [WebMethod]
-    public string CreatePaginatedLinks(int paginatedPageNumber)
+    public string CreatePaginatedLinks(int paginatedPageNumber,string userid)
     {
-        string functionString = "return GetGalleryPictures(this)";
-
+        string functionString = "getData2('DownloadUserPictures.asmx/GetUserPictures',  '#changePhototFromGallery',this,'"+userid+"')";
         string numberOfPicturesPaginationLinks = Usr.BuildHtmlPagination(Usr.maxPhotosPerUploadNewProfilePicture, paginatedPageNumber,functionString);
         return numberOfPicturesPaginationLinks;
 

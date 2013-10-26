@@ -5,7 +5,7 @@ function BindEventsGallery() {
 
         $('html').click(function () {
 
-            HideProfilePictureMenu();
+           // HideProfilePictureMenu();
         });
         
         $("#photoDiv").mouseover(function () {
@@ -16,11 +16,11 @@ function BindEventsGallery() {
 
         }).mouseout(function () {
 
-            if(!($("#showProfilePictureMenu").hasClass("active"))){
-                $("#showProfilePictureMenu").hide();
-                }
-
+           // $("#profilePictureMenu").removeClass("active");
+            $("#showProfilePictureMenu").hide();
         });
+
+
 
         $('.popupBoxClose').click(function () {
             unloadPopupBox($(this).closest('div'));
@@ -28,12 +28,24 @@ function BindEventsGallery() {
 
        
         $("#profilPictureClickMenu").click(function () {
-            $("#showProfilePictureMenu").addClass("active");
-            $("#profilePictureMenu").fadeIn("slow");
+
+            if ($("#profilePictureMenu").hasClass("active")) {
+                $("#profilePictureMenu").removeClass("active");
+
+            }
+            else {
+
+                $("#profilePictureMenu").addClass("active");
+
+            }
 
         });
 
-    
+        $("#profilPictureClickMenu").click(function () {
+            //if ($("#profilePictureMenu").is(":visible"))
+            //    $("#profilePictureMenu").fadeOut("slow");
+
+        });
 
 
 
@@ -98,7 +110,7 @@ function getData2(serviceURL,divId,paginatedPage,userid) {
              $(divId).empty();
 
              $(divId).append(msg.d);
-             alert(msg.d);
+           
 
          },
         complete:
@@ -151,7 +163,7 @@ function loadPopupBox(img,divId) {// To Load the Popupbox
 
 
 function loadPopupBox2(divId) {// To Load the Popupbox
-
+    alert('hej');
     $(divId).fadeIn("slow");
 
     $("#MainContainer").css({ // this is just for style
@@ -185,3 +197,4 @@ function BindChangeProfilePictureFromGallery() {
 
 
 }
+

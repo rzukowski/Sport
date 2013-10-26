@@ -17,7 +17,7 @@ namespace Classes
         public string CreateHtml()
         {
 
-            return "<a id=\'" + ID + "\' cssClass=\'" + this.CssClass + "\' onClick=\'return " + FunctionOnClick + "\'>" + Text + "</a>";
+            return "<a id=\'" + ID + "\' class=\'" + this.CssClass + "\' onClick=\"" + FunctionOnClick + "\">" + Text + "</a>";
 
         }
     }

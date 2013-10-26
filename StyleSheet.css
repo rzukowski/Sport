@@ -1,4 +1,7 @@
 ﻿
+a {
+    cursor:pointer;
+}
 .ajax__calendar_footer {
     display: none;
 }
@@ -124,6 +127,10 @@ ul.links li{
     border:1px solid white;
 }
 
+.hiddenSpan {
+    display: none;
+    color:red;
+}
 
 
 ul.zakladki li{
@@ -154,11 +161,7 @@ border-radius:5px; /* pozostałe przeglądarki */
 behavior:url(border-radius.htc); /* dodatek dla badzIEwnej przeglądarki */
     
 }
-li.active a.active{
-    background: #80FF80;
 
-
-}
 ul.zakladki li a:hover {
     background: #80FF80;
 }
@@ -463,6 +466,7 @@ a {
 .thumb {
     width: 10%;
     height: 10%;
+
 }
 .galeria li {
     display: inline;
@@ -549,10 +553,17 @@ a {
 	
 }
 
+#photoWrapper {
+    display: table;
+    width:1%;
+    height:1%;
+}
 
 
 #photoDiv {
     position:relative;
+   
+    
 }
 
 #showProfilePictureMenu {
@@ -617,15 +628,21 @@ background-color: #eeeeee;
 		content: ""; clear: both; display: block;
 	}
 
+
+
     #showProfilePictureMenu ul ul {
-        display: none;
+     display:none;
         background: #75CE07; border-radius: 0px; padding: 0;
 	position: absolute; top: 100%;
     opacity: 0.8;
     filter: alpha(opacity=80); /* For IE8 and earlier */
     }
 
-   
+  #showProfilePictureMenu ul ul.active{
+  
+    display:block;
+
+}
 
     ul ul li {
 		float: none; 
@@ -717,4 +734,22 @@ background-color: #eeeeee;
 
 .selected {
     border:2px solid red;
+    opacity: 1;
+    filter: alpha(opacity=100); /* msie */
+}
+
+.notSelected {
+  border:2px solid white;
+    opacity: 0.8;
+    filter: alpha(opacity=800);
+}
+
+#map-canvas {
+    height:50em;
+    width:60em;
+}
+
+.OpisText {
+    height:10em;
+    width:10em;
 }

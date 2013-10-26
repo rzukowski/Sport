@@ -26,12 +26,12 @@ namespace UsrCode
         public static string smtpAddress = "smtp.gmail.com";
         public static int emailPort = 587;
         public static string[] extensions = { ".gif", ".jpg", ".png" };
-        public static int maxImgHeight = 300;
-        public static int maxImgWidth = 300;
+        public static int maxImgHeight = 700;
+        public static int maxImgWidth = 700;
         public static int maxRozmiar = 3000000;
-        public static int picturesPerPopup = 5;
 
-        public static int maxPhotosPerUploadNewProfilePicture = 5;
+
+        public static int maxPhotosPerUploadNewProfilePicture = 2;
         //name of default photo
 
         public static string defaultUserPhoto = "photos\\default.jpg";
@@ -1470,7 +1470,7 @@ namespace UsrCode
         public static List<string> GetAllUserPicturesPaginated(string userid, int paginatedPageNumber)
         {
             var photos = (from g in db.Galerias where g.profilowe == 0 && g.userid.ToString() == userid select g.path)
-                .Skip((paginatedPageNumber-1) * Usr.picturesPerPopup).Take(picturesPerPopup);
+                .Skip((paginatedPageNumber - 1) * Usr.maxPhotosPerUploadNewProfilePicture).Take(maxPhotosPerUploadNewProfilePicture);
 
             List<string> phUser = new List<string>();
 
@@ -1569,6 +1569,56 @@ namespace UsrCode
 
             return changed;
 
+
+
+        }
+
+        public static string GetEventsCategories()
+        {
+
+            SqlConnection con = new SqlConnection(Usr.ConnectionString);
+            con.Open();
+
+            Dictionary<int, string> results = new Dictionary<int, string>();
+            
+
+            SqlCommand cmd = new SqlCommand("SELECT id,description FROM EventsCategories", con);
+
+            try
+            {
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    results.Add(reader.GetInt32(0), reader.GetString(1));
+
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                HttpContext.Current.Trace.Write(ex.Message);
+
+            }
+
+            finally
+            {
+
+                con.Close();
+            }
+
+            string str =  DictionaryToJson(results);
+            return str;
+
+
+        }
+
+        public static string DictionaryToJson(Dictionary<int,string> dict)
+        {
+            var results = dict.Select(d => string.Format("\"{0}\": \"{1}\"", d.Key, d.Value));
+            return "{" + string.Join(",",results) +"}";
 
 
         }

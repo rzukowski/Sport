@@ -3,9 +3,8 @@
 function SelectPicture(object) {
     if (!$(object).hasClass("selected")) {
         var classOfDiv = $(object).parent();
-        $(classOfDiv).children(".selected").removeClass("selected");
-        $(object).addClass("selected");
-
+        $(classOfDiv).children(".selected").removeClass("selected").addClass("notSelected");
+        $(object).removeClass("notSelected").addClass("selected");
 
     }
 

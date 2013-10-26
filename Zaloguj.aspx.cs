@@ -29,47 +29,53 @@ public partial class Zaloguj : System.Web.UI.Page
     {
 
 
-
-        if (Membership.ValidateUser(UserName.Text, UserPass.Text))
+        try
         {
-            Session.Add("username", UserName.Text);
-            Session.Add("userid",
-           Membership.GetUser(UserName.Text).ProviderUserKey.ToString());
-
-            //jesli zaznaczona opcja 'Pamiętaj login'
-            if (RememberMe.Checked)
+            if (Membership.ValidateUser(UserName.Text, UserPass.Text))
             {
-                string username = UserName.Text;
-                //stworzymy token ktory zapiszemy tez do bazy
+                Session.Add("username", UserName.Text);
+                Session.Add("userid",
+               Membership.GetUser(UserName.Text).ProviderUserKey.ToString());
 
-                //jesli user ma ciacho z tokenem, to przekierowujemy go na stronę testową,jednoczesnie kasując 
-                //stary token i generujemy nowy
-
-
-                //tworzymy ciacho
-
-                //pobieramy salt z bazy
-                string salt = Usr.GetSaltFromUser(username);
-                if (salt != null)
+                //jesli zaznaczona opcja 'Pamiętaj login'
+                if (RememberMe.Checked)
                 {
-                    HttpCookie cookie = CreateAuthCookie(username, salt);
-                    Response.Cookies.Add(cookie);
+                    string username = UserName.Text;
+                    //stworzymy token ktory zapiszemy tez do bazy
+
+                    //jesli user ma ciacho z tokenem, to przekierowujemy go na stronę testową,jednoczesnie kasując 
+                    //stary token i generujemy nowy
+
+
+                    //tworzymy ciacho
+
+                    //pobieramy salt z bazy
+                    string salt = Usr.GetSaltFromUser(username);
+                    if (salt != null)
+                    {
+                        HttpCookie cookie = CreateAuthCookie(username, salt);
+                        Response.Cookies.Add(cookie);
+                    }
+
+
                 }
 
 
+                Response.Redirect("~/Default.aspx");
+
+            }
+            else
+            {
+                Wrong.Visible = true;
+
             }
 
-
-            Response.Redirect("~/Default.aspx");
-
         }
-        else
+        catch
         {
-            Wrong.Visible = true;
+
 
         }
-
-
     }
 
     // Create a hash of the given password and salt.

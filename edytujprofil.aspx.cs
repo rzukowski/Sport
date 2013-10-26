@@ -197,7 +197,7 @@ public partial class edytujprofil : BaseClass
                 int fileWidth = img.Width;
                 if (fileHeight > Usr.maxImgHeight || fileWidth > Usr.maxImgWidth || FileUploadControl.PostedFile.ContentLength > 3000000 )
                 {
-                    zlyImg.Text = "zły rozmiar pliku";
+                    zlyImg.Text = "zły rozmiar pliku (max: "+Usr.maxImgHeight + "px/"+Usr.maxImgWidth+"px";
                     return;
 
                 }
@@ -216,10 +216,13 @@ public partial class edytujprofil : BaseClass
 
                 if (updated)
                     FileUploadControl.SaveAs(Server.MapPath("./") + strPath + "\\" + filename);
-
+                else
+                    zlyImg.Text = "Plik o tej samej nazwie znajduje sie już w bazie";
                 }
+                else
+                    zlyImg.Text = "Niedozwolone rozszerzenie pliku (dozwolone są: jpg, gif, png)";
             }
-            zlyImg.Text = "Niedozwolone rozszerzenie pliku (dozwolone są: jpg, gif, png)";
+            
           
         }
 
